@@ -36,13 +36,20 @@ namespace NeoFPS
 
         public override void OnPlayerCharacterChanged(ICharacter character)
         {
+            bool found = false;
             if (character as Component != null)
             {
-                m_CompassPro.cameraMain = character.fpCamera.unityCamera;
-                m_CompassPro.miniMapFollow = character.transform;
-                m_CompassPro.FadeIn(1f);
+                var fpCamera = character.fpCamera as FirstPersonCamera;
+                if (fpCamera != null)
+                {
+                    m_CompassPro.cameraMain = fpCamera.unityCamera;
+                    m_CompassPro.miniMapFollow = character.transform;
+                    m_CompassPro.FadeIn(1f);
+                    found = true;
+                }
             }
-            else
+
+            if (!found)
             {
                 m_CompassPro.cameraMain = Camera.main;
                 m_CompassPro.FadeOut(1f);
